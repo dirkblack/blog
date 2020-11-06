@@ -8,7 +8,7 @@ trait CreatesApplication
 {
     protected function getPackageProviders($app)
     {
-        return ['Package\ServiceProvider'];
+        return ['DarkBlog\Providers\ServiceProvider'];
     }
 
     protected function getPackageAliases($app)
@@ -18,7 +18,7 @@ trait CreatesApplication
         ];
     }
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->artisan('migrate', ['--database' => 'sqlite']);
