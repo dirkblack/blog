@@ -7,7 +7,7 @@ Route::get('/Blog/subscribe', 'DarkBlog\Http\Controllers\BlogController@subscrib
 Route::post('/Blog/subscribe', 'DarkBlog\Http\Controllers\BlogController@storeSubscription')->name('subscribe');
 
 // Secured Blog Routes
-Route::group(['prefix' => '/Blog', 'as' => 'blog.', 'middleware' => ['auth', 'web']], function () {
+Route::group(['prefix' => '/Blog', 'as' => 'blog.', 'middleware' => ['web', 'auth']], function () {
     Route::post('/', 'DarkBlog\Http\Controllers\BlogController@store');
     Route::get('/admin', 'DarkBlog\Http\Controllers\BlogController@admin')->name('admin');
     Route::get('/create', 'DarkBlog\Http\Controllers\BlogController@create')->name('create');

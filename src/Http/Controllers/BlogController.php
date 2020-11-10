@@ -7,6 +7,7 @@ use DarkBlog\Models\Subscriber;
 use DarkBlog\Models\Tag;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class BlogController extends Controller
 {
@@ -14,15 +15,14 @@ class BlogController extends Controller
     {
         $posts = Post::published()->get();
 
-        return view('blog.index', [
+        return view('darkblog::index', [
             'posts' => $posts
         ]);
     }
 
     public function admin(Request $request)
     {
-
-        return view('blog.admin', [
+        return view('darkblog::admin', [
             'draft_count'     => Post::draft()->count(),
             'published_count' => Post::published()->count()
         ]);
@@ -30,7 +30,7 @@ class BlogController extends Controller
 
     public function edit($id)
     {
-        return view('blog.edit', ['post' => Post::find($id)]);
+        return view('darkblog::edit', ['post' => Post::find($id)]);
     }
 
     public function store(Request $request)
@@ -83,26 +83,26 @@ class BlogController extends Controller
 
     public function subscribe()
     {
-        return view('blog.subscribe');
+        return view('darkblog::subscribe');
     }
 
     public function subscribeForce(Request $request)
     {
         $this->getPermittedUserOrAbort($request->user(), 'subscribe.force');
 
-        return view('blog.subscribe');
+        return view('darkblog::subscribe');
     }
 
     public function show(Post $post)
     {
-        return view('blog.show', ['post' => $post]);
+        return view('darkblog::show', ['post' => $post]);
     }
 
     public function showDrafts(Request $request)
     {
         $posts = Post::draft()->get();
 
-        return view('blog.drafts', [
+        return view('darkblog::drafts', [
             'posts' => $posts
         ]);
     }
@@ -111,7 +111,7 @@ class BlogController extends Controller
     {
         $subscribers = Subscriber::all();
 
-        return view('blog.subscribers', [
+        return view('darkblog::subscribers', [
             'subscribers' => $subscribers
         ]);
     }
@@ -137,7 +137,7 @@ class BlogController extends Controller
     {
         $posts = Post::tagged($tag)->get();
 
-        return view('blog.tag', [
+        return view('darkblog::tag', [
             'tag'   => $tag,
             'posts' => $posts
         ]);
@@ -145,7 +145,7 @@ class BlogController extends Controller
 
     public function create()
     {
-        return view('blog.create');
+        return view('darkblog::create');
     }
 
     public function destroy(Request $request, Post $post)
