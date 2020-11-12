@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="card">
-        <span class="card-body">
+        <div class="card-body">
             <a href="{{ route('blog.create') }}" class="btn btn-primary">New Post</a>
             <a href="{{ route('blog.drafts') }}" class="btn btn-primary">
                 <span class="badge badge-light">{{ $draft_count }}</span>

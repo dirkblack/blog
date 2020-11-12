@@ -2,8 +2,10 @@
 
 @section('content')
 
+    @include('darkblog::_admin_menu')
+
     @foreach($posts as $post)
-        @include('blog._post', ['post' => $post])
+        @include('darkblog::_post', ['post' => $post])
     @endforeach
 
 @endsection

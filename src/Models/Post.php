@@ -12,10 +12,6 @@ class Post extends Model
 
     protected $dates = ['published'];
 
-    const STATUS_DRAFT = 'draft';
-    const STATUS_SCHEDULED = 'scheduled';
-    const STATUS_PUBLISHED = 'published';
-
     public function bodyHtml()
     {
         return Parser::html($this->body);
@@ -23,24 +19,24 @@ class Post extends Model
 
     public function isDraft()
     {
-        return $this->status == static::STATUS_DRAFT;
+        return $this->published == null;
     }
 
     public function isPublished()
     {
-        return $this->status == static::STATUS_PUBLISHED;
+        return $this->published !== null
+            && $this->published->lt(Carbon::now());
     }
 
     public function scopeDraft($query)
     {
-        return $query->where('status', static::STATUS_DRAFT)
+        return $query->where('published', null)
             ->orderBy('updated_at', 'desc');
     }
 
     public function scopePublished($query)
     {
-        return $query->where('status', 'published')
-            ->where('published', '<=', Carbon::now()->toDateTimeString())
+        return $query->where('published', '<=', Carbon::now()->toDateTimeString())
             ->orderBy('updated_at', 'desc');
     }
 
@@ -69,7 +65,6 @@ class Post extends Model
     public function publish()
     {
         $this->update([
-            'status' => self::STATUS_PUBLISHED,
             'published' => Carbon::now()->toDateTimeString()
         ]);
     }
@@ -77,7 +72,6 @@ class Post extends Model
     public function schedule(Carbon $carbon)
     {
         $this->update([
-            'status' => self::STATUS_SCHEDULED,
             'published' => $carbon->toDateTimeString()
         ]);
     }

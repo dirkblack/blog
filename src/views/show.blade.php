@@ -1,5 +1,5 @@
 @extends('layouts.app')
 
 @section('content')
-    @include('blog._post', ['post' => $post])
+    @include('darkblog::_post', ['post' => $post])
 @endsection

@@ -2,7 +2,10 @@
 
 namespace DarkBlog\Providers;
 
+use DarkBlog\Policies\PostPolicy;
 use DarkBlog\Console\Commands\PublishPosts;
+use DarkBlog\Models\Post;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
 /**
@@ -10,6 +13,11 @@ use Illuminate\Support\ServiceProvider as BaseServiceProvider;
  */
 class ServiceProvider extends BaseServiceProvider
 {
+
+    protected $policies = [
+        Post::class => PostPolicy::class
+    ];
+
     /**
      * Bootstrap the application services.
      *
@@ -25,11 +33,7 @@ class ServiceProvider extends BaseServiceProvider
             __DIR__.'/../views', resource_path('views/vendor/darkblog')
         ]);
 
-        if ($this->app->runningInConsole()) {
-            $this->commands([
-                PublishPosts::class
-            ]);
-        }
+        $this->registerPolicies();
     }
 
     /**
@@ -40,5 +44,12 @@ class ServiceProvider extends BaseServiceProvider
     public function register()
     {
         //
+    }
+
+    public function registerPolicies()
+    {
+        foreach ($this->policies as $key => $value) {
+            Gate::policy($key, $value);
+        }
     }
 }

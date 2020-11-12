@@ -31,7 +31,6 @@ class BlogControllerTest extends TestCase
     public function guest_can_see_index()
     {
         $published_posts = factory(Post::class, 5)->create([
-            'status'    => 'published',
             'published' => Carbon::now()->subDay()->toDateTimeString()
         ]);
 
@@ -70,9 +69,23 @@ class BlogControllerTest extends TestCase
         $this->assertDatabaseHas('posts', [
             'title'     => $test_title,
             'body'      => $test_body,
-            'status'    => Post::STATUS_DRAFT,
             'published' => null
         ]);
+    }
+
+    /** @test */
+    public function show_post()
+    {
+        $this->createAndLoginUser();
+
+        $post = factory(Post::class)->create([
+            'published' => Carbon::now()->subDay()->toDateTimeString()
+        ]);
+
+        $this->get('/Blog/'.$post->id)
+            ->assertOk()
+            ->assertSee($post->title)
+            ->assertSee($post->body);
     }
 
     /** @test */
@@ -110,7 +123,6 @@ class BlogControllerTest extends TestCase
             'user_id' => $this->user->id,
             'title'   => 'Test Post',
             'body'    => 'Test Body',
-            'status'  => Post::STATUS_PUBLISHED
         ]);
 
         $this->get('/Blog/' . $post->id . '/edit')
@@ -119,7 +131,6 @@ class BlogControllerTest extends TestCase
         $this->post('/Blog/' . $post->id, [
             'title'  => 'Updated Title',
             'body'   => 'Updated Body',
-            'status' => Post::STATUS_DRAFT
         ])->assertRedirect('/Blog/' . $post->id);
 
         $this->assertDatabaseHas('posts', [
@@ -127,7 +138,6 @@ class BlogControllerTest extends TestCase
             'user_id' => $this->user->id,
             'title'   => 'Updated Title',
             'body'    => 'Updated Body',
-            'status'  => Post::STATUS_DRAFT
         ]);
     }
 
@@ -135,7 +145,6 @@ class BlogControllerTest extends TestCase
     public function see_published_posts()
     {
         $published_posts = factory(Post::class, 5)->create([
-            'status'    => 'published',
             'published' => Carbon::now()->subDay()->toDateTimeString()
         ]);
 
@@ -215,7 +224,6 @@ class BlogControllerTest extends TestCase
     public function view_posts_by_tag()
     {
         $published_posts = factory(Post::class, 3)->create([
-            'status'    => 'published',
             'published' => Carbon::now()->subDay()->toDateTimeString()
         ]);
 
@@ -272,7 +280,6 @@ class BlogControllerTest extends TestCase
         // begin with a draft post
         $post = factory(Post::class)
             ->create([
-                'status' => 'draft',
             ]);
 
         // We should not see it yet
@@ -284,7 +291,6 @@ class BlogControllerTest extends TestCase
 
         $this->assertDatabaseHas('posts', [
             'id'        => $post->id,
-            'status'    => 'published',
             'published' => Carbon::now()->toDateTimeString()
         ]);
 
@@ -301,7 +307,6 @@ class BlogControllerTest extends TestCase
         // Begin with a draft post
         $post = factory(Post::class)
             ->create([
-                'status' => Post::STATUS_DRAFT
             ]);
 
         // Schedule the post
@@ -312,7 +317,6 @@ class BlogControllerTest extends TestCase
 
         $this->assertDatabaseHas('posts', [
             'id'        => $post->id,
-            'status'    => Post::STATUS_SCHEDULED,
             'published' => Carbon::now()->addMinutes(10)->toDateTimeString()
         ]);
 
@@ -390,7 +394,6 @@ class BlogControllerTest extends TestCase
 
         $drafts = factory(Post::class, 3)->create();
         $published = factory(Post::class, 11)->create([
-            'status'    => Post::STATUS_PUBLISHED,
             'published' => Carbon::now()->subSecond()->toDateTimeString()
         ]);
 
@@ -403,28 +406,7 @@ class BlogControllerTest extends TestCase
             ->assertSee(count($published)); // Published Count
     }
 
-
     /** @test */
-    // a draft post with a scheduled publish date will change the status to published
-    public function scheduled_post_becomes_published()
-    {
-        $post = factory(Post::class)
-            ->create([
-                'status'    => Post::STATUS_SCHEDULED,
-                'published' => Carbon::now()->subSecond()->toDateTimeString()
-            ]);
-
-        // None should be published
-        $this->assertEquals(0, Post::published()->count());
-
-        Artisan::call(PublishPosts::class);
-
-        // Now we should have published posts
-        $this->assertEquals(1, Post::published()->count());
-    }
-
-    /** @test */
-    // Guest CANNOT subscribe
     public function guest_cannot_subscribe()
     {
         // When a guests subscribes we use the term "register" to differentiate from an admin subscribing someone
@@ -449,6 +431,44 @@ class BlogControllerTest extends TestCase
 
         // TODO: Guest should receive an email verifying subscription which contains unsubscribe link
         //  Should be required to verify subscription by clicking in email
+    }
+
+    /** @test */
+    public function show_drafts()
+    {
+        $this->createAndLoginUser();
+
+        $drafts = factory(Post::class, 3)->create();
+        $published = factory(Post::class)->create([
+            'published' => Carbon::now()->subSecond()->toDateTimeString()
+        ]);
+
+        $this->get(route('blog.drafts'))
+            ->assertOk()
+            ->assertSee($drafts[0]->title)
+            ->assertSee($drafts[1]->title)
+            ->assertSee($drafts[2]->title)
+            ->assertDontSee($published->title)
+            ->assertSee('Drafts');
+    }
+
+    /** @test */
+    public function show_published()
+    {
+        $this->createAndLoginUser();
+
+        $draft = factory(Post::class)->create();
+        $published = factory(Post::class, 3)->create([
+            'published' => Carbon::now()->subSecond()->toDateTimeString()
+        ]);
+
+        $this->get(route('blog.published'))
+            ->assertOk()
+            ->assertSee($published[0]->title)
+            ->assertSee($published[1]->title)
+            ->assertSee($published[2]->title)
+            ->assertDontSee($draft->title)
+            ->assertSee('Drafts');
     }
 
     // cancel subscription

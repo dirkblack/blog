@@ -8,7 +8,6 @@ $factory->define(\DarkBlog\Models\Post::class, function (Faker $faker) {
         'body' => $faker->paragraph,
         'user_id' => function () {
             return factory(\App\Models\User::class)->create()->id;
-        },
-        'status' => 'draft'
+        }
     ];
 });

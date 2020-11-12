@@ -107,6 +107,15 @@ class BlogController extends Controller
         ]);
     }
 
+    public function showPublished(Request $request)
+    {
+        $posts = Post::published()->get();
+
+        return view('darkblog::published', [
+            'posts' => $posts
+        ]);
+    }
+
     public function showSubscribers()
     {
         $subscribers = Subscriber::all();
@@ -120,7 +129,6 @@ class BlogController extends Controller
     {
         $post->title = $request['title'];
         $post->body = $request['body'];
-        $post->status = $request['status'];
         $post->save();
 
         return redirect('/Blog/' . $post->id);
