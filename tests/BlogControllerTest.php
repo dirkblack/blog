@@ -52,7 +52,7 @@ class BlogControllerTest extends TestCase
         $test_title = 'This is a Test Title';
         $test_body = 'This is the test body';
 
-        $this->get('/Blog')
+        $this->get(route('blog.admin'))
             ->assertSee('New Post');
 
         $this->get('/Blog/create')
@@ -330,6 +330,12 @@ class BlogControllerTest extends TestCase
     {
         $this->createAndLoginUser();
 
+        $this->get(route('blog.admin'))
+            ->assertSee('Subscribers');
+
+        $this->get(route('blog.subscribers'))
+            ->assertSee('Create');
+
         // The user needs to have permission, we don't yet
         $this->get(route('blog.subscribe.force'))
             ->assertForbidden();
@@ -471,6 +477,25 @@ class BlogControllerTest extends TestCase
             ->assertSee('Drafts');
     }
 
+    /** @test */
+    public function show_scheduled()
+    {
+        $this->createAndLoginUser();
+
+        $draft = factory(Post::class)->create();
+        $scheduled = factory(Post::class, 3)->create([
+            'published' => Carbon::now()->addSeconds(5)->toDateTimeString()
+        ]);
+
+        $this->get(route('blog.scheduled'))
+            ->assertOk()
+            ->assertSee($scheduled[0]->title)
+            ->assertSee($scheduled[1]->title)
+            ->assertSee($scheduled[2]->title)
+            ->assertDontSee($draft->title)
+            ->assertSee('Drafts');
+    }
+
     // cancel subscription
 
     // subscribed users receive an emailed post when it becomes published
@@ -483,7 +508,7 @@ class BlogControllerTest extends TestCase
 
     // Republish an old post (make it sticky)
 
-    // I can write a custom note that will be included in next emailed post to users with a specific tag
+    // I can write a prologue & epiloge that will be included in next emailed post to users with a specific tag
 
     private function createAndLoginUser()
     {

@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Composers;
+namespace DarkBlog\Composers;
 
-use App\Models\Post;
+use DarkBlog\Models\Post;
+use DarkBlog\Models\Subscriber;
 use Illuminate\View\View;
 
 class BlogDashboardComposer
@@ -15,11 +16,11 @@ class BlogDashboardComposer
      */
     public function compose(View $view)
     {
-        $published = Post::published()->count();
-        $draft = Post::draft()->count();
         $view->with([
-            'draft_count' => $draft,
-            'published_count' => $published
+            'draft_count'      => Post::draft()->count(),
+            'published_count'  => Post::published()->count(),
+            'scheduled_count'  => Post::scheduled()->count(),
+            'subscriber_count' => Subscriber::count()
         ]);
 
     }

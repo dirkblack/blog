@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+    @include('darkblog::_admin_menu')
     <form method="POST" class="form-horizontal" action="/Blog">
         {!! csrf_field() !!}
         <div class="card">

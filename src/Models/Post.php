@@ -28,6 +28,12 @@ class Post extends Model
             && $this->published->lt(Carbon::now());
     }
 
+    public function isScheduled()
+    {
+        return $this->published !== null
+            && $this->published->gt(Carbon::now());
+    }
+
     public function scopeDraft($query)
     {
         return $query->where('published', null)
@@ -37,7 +43,13 @@ class Post extends Model
     public function scopePublished($query)
     {
         return $query->where('published', '<=', Carbon::now()->toDateTimeString())
-            ->orderBy('updated_at', 'desc');
+            ->orderBy('published', 'desc');
+    }
+
+    public function scopeScheduled($query)
+    {
+        return $query->where('published', '>', Carbon::now()->toDateTimeString())
+            ->orderBy('published', 'desc');
     }
 
     public function scopeLatest($query, $limit = null)

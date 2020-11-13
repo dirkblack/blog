@@ -27,18 +27,6 @@
                            value="{{ $post->published ? $post->published->toDateString() : '' }}">
                 </div>
             </div>
-            <div class="col">
-                <div class="form-group">
-                    <label for="status">Status</label>
-                    <select name="status" id="status" class="form-control" value="{{ $post->status }}">
-                        @foreach(['draft', 'published', 'scheduled'] as $status)
-                            <option value="{{ $status }}" {{ $post->status == $status ? 'selected' : '' }}>
-                                {{ ucfirst($status) }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
         </div>
 
         <div class="form-group">

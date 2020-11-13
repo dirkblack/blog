@@ -13,9 +13,10 @@ Route::group(['prefix' => '/Blog', 'as' => 'blog.', 'middleware' => ['web', 'aut
     Route::get('/create', 'DarkBlog\Http\Controllers\BlogController@create')->name('create');
     Route::get('/drafts', 'DarkBlog\Http\Controllers\BlogController@showDrafts')->name('drafts');
     Route::get('/published', 'DarkBlog\Http\Controllers\BlogController@showPublished')->name('published');
+    Route::get('/scheduled', 'DarkBlog\Http\Controllers\BlogController@showScheduled')->name('scheduled');
     Route::get('/subscribe/force', 'DarkBlog\Http\Controllers\BlogController@subscribeForce')->name('subscribe.force');
     Route::post('/subscribe/force', 'DarkBlog\Http\Controllers\BlogController@storeSubscriptionForce')->name('subscribe.force.post');
-    Route::get('/subscribers', 'DarkBlog\Http\Controllers\BlogController@showSubscribers');
+    Route::get('/subscribers', 'DarkBlog\Http\Controllers\BlogController@showSubscribers')->name('subscribers');
     Route::get('/{post}', 'DarkBlog\Http\Controllers\BlogController@show');
     Route::post('/{post}', 'DarkBlog\Http\Controllers\BlogController@update');
     Route::delete('/{post}', 'DarkBlog\Http\Controllers\BlogController@destroy')->name('delete');

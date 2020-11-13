@@ -22,10 +22,7 @@ class BlogController extends Controller
 
     public function admin(Request $request)
     {
-        return view('darkblog::admin', [
-            'draft_count'     => Post::draft()->count(),
-            'published_count' => Post::published()->count()
-        ]);
+        return view('darkblog::admin');
     }
 
     public function edit($id)
@@ -78,7 +75,7 @@ class BlogController extends Controller
             'name'  => $request['name']
         ]);
 
-        return redirect('/Blog/subscribers');
+        return redirect(route('blog.subscribers'));
     }
 
     public function subscribe()
@@ -116,6 +113,15 @@ class BlogController extends Controller
         ]);
     }
 
+    public function showScheduled(Request $request)
+    {
+        $posts = Post::scheduled()->get();
+
+        return view('darkblog::drafts', [
+            'posts' => $posts
+        ]);
+    }
+
     public function showSubscribers()
     {
         $subscribers = Subscriber::all();
@@ -129,6 +135,7 @@ class BlogController extends Controller
     {
         $post->title = $request['title'];
         $post->body = $request['body'];
+        $post->published = $request['published'];
         $post->save();
 
         return redirect('/Blog/' . $post->id);
