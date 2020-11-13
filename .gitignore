@@ -3,11 +3,9 @@ node_modules/
 npm-debug.log
 yarn-error.log
 
-# Laravel 5 & Lumen specific
 public/storage
 public/hot
 
-storage/*.key
 .env
 Homestead.yaml
 Homestead.json
@@ -15,7 +13,3 @@ Homestead.json
 .phpunit.result.cache
 .idea/*
 storage/*
-.idea/workspace.xml
-.idea/workspace.xml
-.idea/workspace.xml
-.idea/workspace.xml
