@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card-header">
-        <ul class="navbar-nav ml-auto">
+        <ul class="navbar-nav float-right">
             <li class="nav-item dropdown">
                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                     Blog <span class="caret"></span>
@@ -24,9 +24,8 @@
                 </div>
             </li>
         </ul>
-
-    </div>
-    <div class="card-body">
-
+        <div class="mr-auto">
+            <h2>{{ isset($title) ? $title : 'Blog' }}</h2>
+        </div>
     </div>
 </div>

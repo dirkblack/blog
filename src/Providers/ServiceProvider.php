@@ -3,6 +3,7 @@
 namespace DarkBlog\Providers;
 
 use DarkBlog\Composers\BlogDashboardComposer;
+use DarkBlog\Console\Commands\MailSubscribers;
 use DarkBlog\Policies\PostPolicy;
 use DarkBlog\Console\Commands\PublishPosts;
 use DarkBlog\Models\Post;
@@ -35,13 +36,21 @@ class ServiceProvider extends BaseServiceProvider
             __DIR__ . '/../views', resource_path('views/vendor/darkblog')
         ]);
 
+        // Mail Markdown templates
+        $this->loadViewsFrom(__DIR__ . '/../views/mail/html', 'mail');
+
         $this->registerPolicies();
 
-        // Using class based composers...
         View::composer(
             'darkblog::_admin_menu',
             BlogDashboardComposer::class
         );
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                MailSubscribers::class
+            ]);
+        }
     }
 
     /**

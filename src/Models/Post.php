@@ -12,6 +12,9 @@ class Post extends Model
 
     protected $dates = ['published'];
 
+    const STATUS_DRAFT = 'draft';
+    const STATUS_PUBLISHED = 'published';
+
     public function bodyHtml()
     {
         return Parser::html($this->body);
@@ -32,6 +35,13 @@ class Post extends Model
     {
         return $this->published !== null
             && $this->published->gt(Carbon::now());
+    }
+
+    public static function nextPostForSubscribers()
+    {
+        return self::where('published', '<=', Carbon::now()->toDateTimeString())
+            ->orderBy('published', 'desc')
+            ->first();
     }
 
     public function scopeDraft($query)
@@ -78,6 +88,13 @@ class Post extends Model
     {
         $this->update([
             'published' => Carbon::now()->toDateTimeString()
+        ]);
+    }
+
+    public function markAsPublished()
+    {
+        $this->update([
+            'status' => self::STATUS_PUBLISHED
         ]);
     }
 

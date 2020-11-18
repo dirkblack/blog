@@ -70,10 +70,13 @@ class BlogController extends Controller
             'name'  => 'required'
         ]);
 
-        Subscriber::create([
+        $subscriber = Subscriber::create([
             'email' => $request['email'],
             'name'  => $request['name']
         ]);
+
+        // A forced Subscription means the email does not have to be verified
+        $subscriber->verify();
 
         return redirect(route('blog.subscribers'));
     }
@@ -87,7 +90,7 @@ class BlogController extends Controller
     {
         $this->getPermittedUserOrAbort($request->user(), 'subscribe.force');
 
-        return view('darkblog::subscribe');
+        return view('darkblog::subscribe-force');
     }
 
     public function show(Post $post)

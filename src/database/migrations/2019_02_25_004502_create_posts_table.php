@@ -19,6 +19,7 @@ class CreatePostsTable extends Migration
             $table->string('title');
             $table->text('body');
             $table->dateTime('published')->nullable();
+            $table->string('status')->default('draft');
             $table->timestamps();
         });
     }

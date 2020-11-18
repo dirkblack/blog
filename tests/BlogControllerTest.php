@@ -2,7 +2,9 @@
 
 namespace Tests\Feature;
 
+use DarkBlog\Console\Commands\MailSubscribers;
 use DarkBlog\Console\Commands\PublishPosts;
+use DarkBlog\Mail\SubscriberEmail;
 use DarkBlog\Models\Post;
 use DarkBlog\Models\Subscriber;
 use DarkBlog\Models\Tag;
@@ -12,6 +14,7 @@ use App\Models\Permission;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -82,7 +85,7 @@ class BlogControllerTest extends TestCase
             'published' => Carbon::now()->subDay()->toDateTimeString()
         ]);
 
-        $this->get('/Blog/'.$post->id)
+        $this->get('/Blog/' . $post->id)
             ->assertOk()
             ->assertSee($post->title)
             ->assertSee($post->body);
@@ -129,8 +132,8 @@ class BlogControllerTest extends TestCase
             ->assertSee($post->title);
 
         $this->post('/Blog/' . $post->id, [
-            'title'  => 'Updated Title',
-            'body'   => 'Updated Body',
+            'title' => 'Updated Title',
+            'body'  => 'Updated Body',
         ])->assertRedirect('/Blog/' . $post->id);
 
         $this->assertDatabaseHas('posts', [
@@ -326,15 +329,17 @@ class BlogControllerTest extends TestCase
     }
 
     /** @test */
-    public function i_can_subscribe_user()
+    public function master_can_subscribe_user()
     {
+        // A master can sign up a subscriber without requiring that email be verified
+
         $this->createAndLoginUser();
 
         $this->get(route('blog.admin'))
             ->assertSee('Subscribers');
 
         $this->get(route('blog.subscribers'))
-            ->assertSee('Create');
+            ->assertSee('Add Subscriber');
 
         // The user needs to have permission, we don't yet
         $this->get(route('blog.subscribe.force'))
@@ -356,12 +361,14 @@ class BlogControllerTest extends TestCase
         $this->post(route('blog.subscribe.force.post'), [
             'email' => 'testuser@example.com',
             'name'  => 'Test User'
-        ])->assertRedirect('/Blog/subscribers');
+        ])
+            ->assertRedirect(route('blog.subscribers'));
 
         // Should see in database
         $this->assertDatabaseHas('subscribers', [
-            'email' => 'testuser@example.com',
-            'name'  => 'Test User'
+            'email'    => 'testuser@example.com',
+            'name'     => 'Test User',
+            'verified' => true
         ]);
     }
 
@@ -496,19 +503,48 @@ class BlogControllerTest extends TestCase
             ->assertSee('Drafts');
     }
 
-    // cancel subscription
+    /** @test */
+    public function mail_list_command()
+    {
+        Mail::fake();
 
-    // subscribed users receive an emailed post when it becomes published
+        $post = factory(Post::class)->create([
+            'published' => Carbon::now()->subSecond()->toDateTimeString()
+        ]);
+
+        $subscribers = factory(Subscriber::class, 2)->create();
+
+        Artisan::call(MailSubscribers::class);
+
+        Mail::assertSent(SubscriberEmail::class, 2);
+
+        foreach ($subscribers as $subscriber) {
+            Mail::assertSent(SubscriberEmail::class, function ($mail) use ($subscriber, $post) {
+                return $mail->hasTo($subscriber->email) &&
+                       $mail->post->title == $post->title;
+            });
+        }
+
+        $post->refresh();
+
+        $this->assertEquals(Post::STATUS_PUBLISHED, $post->status);
+
+    }
+
+    // I can write a prologue & epilogue that will be included in next emailed post to users with a specific tag
+
+    // END OF MVP
+    //////////////
 
     // subscriber must confirm email address
 
-    // I can add a tag to a Subscriber
+    // subscribed users receive an emailed post when it becomes published
+
+    // subscriber can unsubscribe
 
     // Stats record visitors
 
     // Republish an old post (make it sticky)
-
-    // I can write a prologue & epiloge that will be included in next emailed post to users with a specific tag
 
     private function createAndLoginUser()
     {
