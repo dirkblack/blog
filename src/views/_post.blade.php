@@ -1,20 +1,39 @@
 <div class="card mt-3 mb-2">
-    <div class="post card-body">
+    <div class="card-header">
         <div class="float-right">
-            @if($post->isDraft())
-                <form method="POST" class="form-horizontal" action="{{ route('blog.publish', ['post' => $post->id]) }}">
-                    @csrf
-                    <input type="submit" class="btn btn-primary btn-sm" value="Publish">
-                </form>
-            @endif
             @can('update', $post)
+                @if($post->isDraft())
+                    <form method="POST" class="form-horizontal" action="{{ route('blog.publish', ['post' => $post->id]) }}">
+                        @csrf
+                        <input type="submit" class="btn btn-primary btn-sm" value="Publish">
+                    </form>
+                @endif
                 <a href="/Blog/{{ $post->id }}/edit" class="btn btn-secondary btn-sm">Edit</a>
             @endcan
         </div>
 
         <h1>{{ $post->title }}</h1>
+    </div>
+    <div class="post card-body">
+        @can('update', $post)
+            @if($post->isDraft() && $post->prologue)
+                <h2>Prologue</h2>
+                {!! $post->prologueHtml() !!}
+            @endif
+        @endcan
+
+        @if($post->isDraft())
+            <h2>Body</h2>
+        @endif
 
         {!! $post->bodyHtml() !!}
+
+        @can('update', $post)
+            @if($post->isDraft() && $post->epilogue)
+                <h2>Epilogue</h2>
+                {!! $post->epilogueHtml() !!}
+            @endif
+        @endcan
 
         @if($post->isPublished())
             <small class="float-right">{{ $post->published->format('M d') }}</small>

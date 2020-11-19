@@ -15,6 +15,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\View;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -72,7 +73,8 @@ class BlogControllerTest extends TestCase
         $this->assertDatabaseHas('posts', [
             'title'     => $test_title,
             'body'      => $test_body,
-            'published' => null
+            'published' => null,
+            'user_id'   => $this->user->id
         ]);
     }
 
@@ -528,10 +530,74 @@ class BlogControllerTest extends TestCase
         $post->refresh();
 
         $this->assertEquals(Post::STATUS_PUBLISHED, $post->status);
-
     }
 
-    // I can write a prologue & epilogue that will be included in next emailed post to users with a specific tag
+    /** @test */
+    public function email_contents()
+    {
+        $prologue = 'This email should contain a prologue';
+        $epilogue = 'This email has an epilogue';
+
+        $post = factory(Post::class)->create([
+            'published' => Carbon::now()->subSecond()->toDateTimeString(),
+            'prologue'  => $prologue,
+            'epilogue' => $epilogue
+        ]);
+
+        $email = (new SubscriberEmail($post))->render();
+
+        $this->assertStringContainsString($post->title, $email);
+        $this->assertStringContainsString($prologue, $email);
+        $this->assertStringContainsString($epilogue, $email);
+    }
+
+    /** @test */
+    public function post_can_have_prologue_and_epilogue()
+    {
+        $this->createAndLoginUser();
+
+        $test_title = 'This is a Test Title';
+        $test_body = 'This is the test body';
+        $test_prologue = 'The prologue';
+        $test_epilogue = 'The epilogue';
+
+        $this->post('/Blog', [
+            'title'    => $test_title,
+            'body'     => $test_body,
+            'prologue' => $test_prologue,
+            'epilogue' => $test_epilogue
+        ]);
+
+        $this->assertDatabaseHas('posts', [
+            'title'     => $test_title,
+            'body'      => $test_body,
+            'prologue'  => $test_prologue,
+            'epilogue'  => $test_epilogue,
+            'published' => null
+        ]);
+
+        // Should see prologue for drafts
+        $this->get(route('blog.drafts'))
+            ->assertSee($test_title)
+            ->assertSee('Body')
+            ->assertSee('Prologue')
+            ->assertSee('Epilogue')
+            ->assertSee($test_prologue)
+            ->assertSee($test_epilogue);
+
+        // But not in Published posts
+        $post = Post::first();
+        $post->published = Carbon::now()->subSecond()->toDateTimeString();
+        $post->save();
+
+        $this->get(route('blog'))
+            ->assertSee($test_title)
+            ->assertDontSee('Body')
+            ->assertDontSee('Prologue')
+            ->assertDontSee('Epilogue')
+            ->assertDontSee($test_prologue)
+            ->assertDontSee($test_epilogue);
+    }
 
     // END OF MVP
     //////////////

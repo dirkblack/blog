@@ -38,9 +38,11 @@ class BlogController extends Controller
         ]);
 
         Post::create([
-            'user_id' => $request->user()->id,
-            'title'   => $request['title'],
-            'body'    => $request['body']
+            'user_id'  => $request->user()->id,
+            'title'    => $request['title'],
+            'body'     => $request['body'],
+            'prologue' => $request['prologue'],
+            'epilogue' => $request['epilogue']
         ]);
 
         return redirect('/Blog/drafts');
@@ -139,6 +141,8 @@ class BlogController extends Controller
         $post->title = $request['title'];
         $post->body = $request['body'];
         $post->published = $request['published'];
+        $post->prologue = $request['prologue'];
+        $post->epilogue = $request['epilogue'];
         $post->save();
 
         return redirect('/Blog/' . $post->id);

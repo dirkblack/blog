@@ -22,16 +22,24 @@
             <div class="col">
                 <div class="form-group">
                     <label for="published">Published</label>
-                    <input type="date" class="form-control" id="published"
+                    <input type="datetime-local" class="form-control" id="published"
                            name="published"
-                           value="{{ $post->published ? $post->published->toDateString() : '' }}">
+                           value="{{ $post->published ? $post->published->toDateTimeLocalString() : '' }}">
                 </div>
             </div>
         </div>
 
         <div class="form-group">
             <label for="body">Body</label>
-            <textarea class="form-control" name="body" id="body" cols="30" rows="10">{{ $post->body }}</textarea>
+            <textarea class="form-control" name="body" cols="30" rows="10">{{ $post->body }}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="body">Prologue</label>
+            <textarea class="form-control" name="prologue" cols="30" rows="5">{{ $post->prologue }}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="body">Epilogue</label>
+            <textarea class="form-control" name="epilogue" cols="30" rows="5">{{ $post->epilogue }}</textarea>
         </div>
 
         <div class="form-row">

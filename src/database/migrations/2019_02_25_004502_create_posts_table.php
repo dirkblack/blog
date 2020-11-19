@@ -18,6 +18,8 @@ class CreatePostsTable extends Migration
             $table->unsignedInteger('user_id');
             $table->string('title');
             $table->text('body');
+            $table->text('prologue')->nullable();
+            $table->text('epilogue')->nullable();
             $table->dateTime('published')->nullable();
             $table->string('status')->default('draft');
             $table->timestamps();

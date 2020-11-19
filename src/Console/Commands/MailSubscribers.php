@@ -47,8 +47,8 @@ class MailSubscribers extends Command
 
         // to our list of subscribers
         $subscribers = Subscriber::all();
+
         foreach ($subscribers as $subscriber) {
-dump($subscriber->email);
             Mail::to($subscriber->email)->send(new SubscriberEmail($post));
         }
 

@@ -20,6 +20,16 @@ class Post extends Model
         return Parser::html($this->body);
     }
 
+    public function prologueHtml()
+    {
+        return $this->prologue ? Parser::html($this->prologue) : '';
+    }
+
+    public function epilogueHtml()
+    {
+        return $this->epilogue ? Parser::html($this->epilogue) : '';
+    }
+
     public function isDraft()
     {
         return $this->published == null;
