@@ -38,7 +38,7 @@
         @if($post->isPublished())
             <small class="float-right">{{ $post->published->format('M d') }}</small>
         @elseif($post->isScheduled())
-            <small class="float-right">Scheduled: {{ $post->published->format('M d') }}</small>
+            <small class="float-right">Scheduled: {{ $post->published->format('M d @ G:i') }}</small>
         @elseif($post->isDraft())
             <small class="float-right">Updated: {{ $post->updated_at->format('M d') }}</small>
         @endif

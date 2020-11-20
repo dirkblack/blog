@@ -50,6 +50,7 @@ class Post extends Model
     public static function nextPostForSubscribers()
     {
         return self::where('published', '<=', Carbon::now()->toDateTimeString())
+            ->where('status', Post::STATUS_DRAFT)
             ->orderBy('published', 'desc')
             ->first();
     }

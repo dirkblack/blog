@@ -43,15 +43,16 @@ class MailSubscribers extends Command
     {
         // We need a post to send out
         // Get the most recently published
-        $post = Post::nextPostForSubscribers();
+        if ($post = Post::nextPostForSubscribers()) {
+            // to our list of subscribers
+            $subscribers = Subscriber::all();
 
-        // to our list of subscribers
-        $subscribers = Subscriber::all();
+            foreach ($subscribers as $subscriber) {
+                Mail::to($subscriber->email)->send(new SubscriberEmail($post));
+            }
 
-        foreach ($subscribers as $subscriber) {
-            Mail::to($subscriber->email)->send(new SubscriberEmail($post));
+            $post->markAsPublished();
         }
 
-        $post->markAsPublished();
     }
 }

@@ -1,5 +1,4 @@
 @component('mail::message')
-# {{ $post->title }}
 
 @if($post->prologue)
 <div style="font-style:italic;">
@@ -11,6 +10,8 @@ Prologue:
 </div>
 
 @endif
+
+# {{ $post->title }}
 
 {{ $post->body }}
 
@@ -25,5 +26,5 @@ Epilogue:
 
 @endif
 
-{{ config('app.name') }}
+~ {{ config('app.name') }}
 @endcomponent
