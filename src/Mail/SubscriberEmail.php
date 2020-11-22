@@ -32,7 +32,7 @@ class SubscriberEmail extends Mailable
     public function build()
     {
         return $this->subject($this->post->title)
-            ->from('dirk@dirkbritton.com')
+            ->from(env('MAIL_FROM_ADDRESS'))
             ->view('darkblog::subscriber-email');
     }
 }
