@@ -604,13 +604,17 @@ class BlogControllerTest extends TestCase
 
     // subscriber must confirm email address
 
-    // subscribed users receive an emailed post when it becomes published
-
     // subscriber can unsubscribe
+
+    // Can view posts by a title slug
 
     // Stats record visitors
 
     // Republish an old post (make it sticky)
+
+    // Includes Markdown package
+
+    // Can include an image in a Post
 
     private function createAndLoginUser()
     {

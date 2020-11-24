@@ -1,5 +1,11 @@
 <?php
 
+Route::get('email', function () {
+    $post = \DarkBlog\Models\Post::find(3);
+
+    return new \DarkBlog\Mail\SubscriberEmail($post);
+});
+
 // Public Blog Routes
 Route::get('/Blog', 'DarkBlog\Http\Controllers\BlogController@index')->middleware('web')->name('blog');
 Route::get('/Blog/tag/{tag}', 'DarkBlog\Http\Controllers\BlogController@showTag');
@@ -17,7 +23,6 @@ Route::group(['prefix' => '/Blog', 'as' => 'blog.', 'middleware' => ['web', 'aut
     Route::get('/subscribe/force', 'DarkBlog\Http\Controllers\BlogController@subscribeForce')->name('subscribe.force');
     Route::post('/subscribe/force', 'DarkBlog\Http\Controllers\BlogController@storeSubscriptionForce')->name('subscribe.force.post');
     Route::get('/subscribers', 'DarkBlog\Http\Controllers\BlogController@showSubscribers')->name('subscribers');
-    Route::get('/{post}', 'DarkBlog\Http\Controllers\BlogController@show');
     Route::post('/{post}', 'DarkBlog\Http\Controllers\BlogController@update');
     Route::delete('/{post}', 'DarkBlog\Http\Controllers\BlogController@destroy')->name('delete');
     Route::post('/{post}/publish', 'DarkBlog\Http\Controllers\BlogController@publish')->name('publish');
@@ -25,3 +30,5 @@ Route::group(['prefix' => '/Blog', 'as' => 'blog.', 'middleware' => ['web', 'aut
     Route::get('/{post}/edit', 'DarkBlog\Http\Controllers\BlogController@edit')->name('edit');
     Route::post('/{post}/tag/{tag}', 'DarkBlog\Http\Controllers\BlogController@addTag');
 });
+
+Route::get('/Blog/{post}', 'DarkBlog\Http\Controllers\BlogController@show')->middleware('web')->name('blog.show');

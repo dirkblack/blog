@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.blog')
 
 @push('scripts')
     <script src="/js/blog.js" type="module"></script>

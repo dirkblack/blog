@@ -33,7 +33,7 @@ class ServiceProvider extends BaseServiceProvider
         $this->loadViewsFrom(__DIR__ . '/../views', 'darkblog');
         $this->loadFactoriesFrom(__DIR__ . '/../database/factories');
         $this->publishes([
-            __DIR__ . '/../views', resource_path('views/vendor/darkblog')
+            __DIR__ . '/../views' => resource_path('views/vendor/darkblog')
         ]);
 
         // Mail Markdown templates
@@ -51,6 +51,7 @@ class ServiceProvider extends BaseServiceProvider
                 MailSubscribers::class
             ]);
         }
+
     }
 
     /**

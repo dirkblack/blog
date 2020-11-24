@@ -5,7 +5,8 @@ namespace DarkBlog;
 use App\Models\Document;
 use App\Models\DocumentLink;
 use Illuminate\Support\Facades\Storage;
-use Michelf\Markdown;
+use GrahamCampbell\Markdown\Facades\Markdown;
+use League\CommonMark\MarkdownConverterInterface;
 
 class Parser
 {
@@ -218,6 +219,6 @@ class Parser
 
     static public function html($text)
     {
-        return trim(Markdown::defaultTransform($text));
+        return trim(Markdown::convertToHtml($text));
     }
 }

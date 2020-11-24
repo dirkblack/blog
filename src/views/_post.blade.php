@@ -12,7 +12,7 @@
             @endcan
         </div>
 
-        <h1>{{ $post->title }}</h1>
+        <h1><a href="{{ route('blog.show', ['post' => $post->id]) }}">{{ $post->title }}</a></h1>
     </div>
     <div class="post card-body">
         @can('update', $post)

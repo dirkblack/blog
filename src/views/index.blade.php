@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.blog')
 
 @section('content')
 
@@ -6,8 +6,11 @@
         <a href="{{route('blog.admin')}}">Admin</a>
     @endauth
 
-    @foreach($posts as $post)
-        @include('darkblog::_post', ['post' => $post])
-    @endforeach
-
+    @if(count($posts) > 0)
+        @foreach($posts as $post)
+            @include('darkblog::_post', ['post' => $post])
+        @endforeach
+    @else
+        <p>No Posts have been published</p>
+    @endif
 @endsection

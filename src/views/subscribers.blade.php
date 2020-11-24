@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.blog')
 
 @section('content')
     @include('darkblog::_admin_menu', ['title' => 'Subscribers'])
