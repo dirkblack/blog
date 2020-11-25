@@ -81,8 +81,6 @@ class BlogControllerTest extends TestCase
     /** @test */
     public function show_post()
     {
-        $this->createAndLoginUser();
-
         $post = factory(Post::class)->create([
             'published' => Carbon::now()->subDay()->toDateTimeString()
         ]);
@@ -599,10 +597,20 @@ class BlogControllerTest extends TestCase
             ->assertDontSee($test_epilogue);
     }
 
-    // END OF MVP
-    //////////////
+    /** @test */
+    public function show_post_by_slug()
+    {
+        $post = factory(Post::class)->create([
+            'published' => Carbon::now()->subDay()->toDateTimeString()
+        ]);
 
-    // subscriber must confirm email address
+        $this->get('/Blog/' . $post->slug)
+            ->assertOk()
+            ->assertSee($post->title)
+            ->assertSee($post->body);
+    }
+
+    // Guest can subscribe
 
     // subscriber can unsubscribe
 

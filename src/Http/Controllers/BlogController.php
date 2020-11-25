@@ -95,9 +95,19 @@ class BlogController extends Controller
         return view('darkblog::subscribe-force');
     }
 
-    public function show(Post $post)
+    public function show($slug_or_id)
     {
-//        dd($post);
+        if (is_numeric($slug_or_id)) {
+            $post = Post::find($slug_or_id);
+        }
+        else {
+            $post = Post::where('slug', $slug_or_id)->first();
+        }
+
+        if ( ! $post) {
+            throw new \Exception('No Post Found');
+        }
+
         return view('darkblog::show', ['post' => $post]);
     }
 

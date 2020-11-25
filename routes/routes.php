@@ -6,12 +6,6 @@ Route::get('email', function () {
     return new \DarkBlog\Mail\SubscriberEmail($post);
 });
 
-// Public Blog Routes
-Route::get('/Blog', 'DarkBlog\Http\Controllers\BlogController@index')->middleware('web')->name('blog');
-Route::get('/Blog/tag/{tag}', 'DarkBlog\Http\Controllers\BlogController@showTag');
-Route::get('/Blog/subscribe', 'DarkBlog\Http\Controllers\BlogController@subscribe')->name('blog.subscribe');
-Route::post('/Blog/subscribe', 'DarkBlog\Http\Controllers\BlogController@storeSubscription')->name('subscribe');
-
 // Secured Blog Routes
 Route::group(['prefix' => '/Blog', 'as' => 'blog.', 'middleware' => ['web', 'auth']], function () {
     Route::post('/', 'DarkBlog\Http\Controllers\BlogController@store');
@@ -31,4 +25,10 @@ Route::group(['prefix' => '/Blog', 'as' => 'blog.', 'middleware' => ['web', 'aut
     Route::post('/{post}/tag/{tag}', 'DarkBlog\Http\Controllers\BlogController@addTag');
 });
 
-Route::get('/Blog/{post}', 'DarkBlog\Http\Controllers\BlogController@show')->middleware('web')->name('blog.show');
+// Public Blog Routes
+Route::get('/Blog', 'DarkBlog\Http\Controllers\BlogController@index')->middleware('web')->name('blog');
+Route::get('/Blog/tag/{tag}', 'DarkBlog\Http\Controllers\BlogController@showTag');
+Route::get('/Blog/subscribe', 'DarkBlog\Http\Controllers\BlogController@subscribe')->name('blog.subscribe');
+Route::post('/Blog/subscribe', 'DarkBlog\Http\Controllers\BlogController@storeSubscription')->name('subscribe');
+
+Route::get('/Blog/{slug}', 'DarkBlog\Http\Controllers\BlogController@show')->middleware('web')->name('blog.show');
