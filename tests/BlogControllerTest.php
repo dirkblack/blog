@@ -1,11 +1,12 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests;
 
 use DarkBlog\Console\Commands\MailSubscribers;
 use DarkBlog\Console\Commands\PublishPosts;
 use DarkBlog\Mail\SubscriberEmail;
 use DarkBlog\Models\Post;
+use DarkBlog\Models\Slug;
 use DarkBlog\Models\Subscriber;
 use DarkBlog\Models\Tag;
 use App\Models\Role;
@@ -49,6 +50,7 @@ class BlogControllerTest extends TestCase
         /*
          * Create a new Post
          * Should default to Draft
+         * Slug should be created
          */
 
         $this->createAndLoginUser();
@@ -57,9 +59,11 @@ class BlogControllerTest extends TestCase
         $test_body = 'This is the test body';
 
         $this->get(route('blog.admin'))
+            ->assertOk()
             ->assertSee('New Post');
 
         $this->get('/Blog/create')
+            ->assertOk()
             ->assertSee('Create');
 
         $this->post('/Blog', [
@@ -74,7 +78,8 @@ class BlogControllerTest extends TestCase
             'title'     => $test_title,
             'body'      => $test_body,
             'published' => null,
-            'user_id'   => $this->user->id
+            'user_id'   => $this->user->id,
+            'slug'      => Slug::slugify($test_title)
         ]);
     }
 
@@ -232,7 +237,7 @@ class BlogControllerTest extends TestCase
 
         $tags = factory(Tag::class, 3)->create();
 
-        // Apply each tag once to each of the posts
+        // Apply each tag once to a different posts
         foreach ($published_posts as $index => $post) {
             $post->tags()->save($tags[$index]);
         }
@@ -539,7 +544,7 @@ class BlogControllerTest extends TestCase
         $post = factory(Post::class)->create([
             'published' => Carbon::now()->subSecond()->toDateTimeString(),
             'prologue'  => $prologue,
-            'epilogue' => $epilogue
+            'epilogue'  => $epilogue
         ]);
 
         $email = (new SubscriberEmail($post))->render();

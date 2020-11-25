@@ -4,23 +4,48 @@ namespace DarkBlog\Models;
 
 class Slug
 {
-    public static function generate($title)
+    public static function generate($string)
     {
+        $original = $string;
+        $i = 0; // track our tries
+        $max_tries = 99;
+
+        do {
+            $slug = self::slugify($string);
+
+            $i++; // track our tries
+            // append an integer to the string for successive tries
+            $string = $original . '-' . $i;
+        }
+        while (Post::where('slug', $slug)->exists() && $i < $max_tries);
+
+        return $slug;
+    }
+
+    public static function slugify($string)
+    {
+        /*
+         * Convert a string to our slug format
+         */
+
+        // start with the raw text
+        $slug = $string;
+
         // replace non letter or digits by -
-        $title = preg_replace('~[^\pL\d]+~u', '-', $title);
+        $slug = preg_replace('~[^\pL\d]+~u', '-', $slug);
 
         // remove unwanted characters
-        $title = preg_replace('~[^-\w]+~', '', $title);
+        $slug = preg_replace('~[^-\w]+~', '', $slug);
 
         // trim
-        $title = trim($title, '-');
+        $slug = trim($slug, '-');
 
         // remove duplicate -
-        $title = preg_replace('~-+~', '-', $title);
+        $slug = preg_replace('~-+~', '-', $slug);
 
         // lowercase
-        $title = strtolower($title);
+        $slug = strtolower($slug);
 
-        return $title;
+        return $slug;
     }
 }

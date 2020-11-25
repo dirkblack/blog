@@ -15,6 +15,13 @@ class Post extends Model
     const STATUS_DRAFT = 'draft';
     const STATUS_PUBLISHED = 'published';
 
+    protected static function booted()
+    {
+        static::creating(function ($post) {
+            $post->slug = Slug::generate($post->title);
+        });
+    }
+
     public function bodyHtml()
     {
         return Parser::html($this->body);
