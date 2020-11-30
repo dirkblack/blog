@@ -5,7 +5,7 @@
 
 Prologue:
 
-{{ $post->prologue }}
+{!! $post->prologue !!}
 
 </div>
 
@@ -13,14 +13,14 @@ Prologue:
 
 # {{ $post->title }}
 
-{{ $post->body }}
+{!! $post->body !!}
 
 @if($post->epilogue)
 <div style="font-style:italic;">
 
 Epilogue:
 
-{{ $post->epilogue }}
+{!! $post->epilogue !!}
 
 </div>
 

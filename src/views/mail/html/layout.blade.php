@@ -21,6 +21,10 @@ width: 100% !important;
 width: 100% !important;
 }
 }
+
+.img-fluid {
+    max-width: 100%;
+}
 </style>
 
 <table class="wrapper" width="100%" cellpadding="0" cellspacing="0" role="presentation">
