@@ -1,7 +1,7 @@
 <?php
 
 Route::get('email', function () {
-    $post = \DarkBlog\Models\Post::find(3);
+    $post = \DarkBlog\Models\Post::find(2);
 
     return new \DarkBlog\Mail\SubscriberEmail($post);
 });

@@ -5,12 +5,10 @@ namespace DarkBlog;
 use App\Models\Document;
 use App\Models\DocumentLink;
 use Illuminate\Support\Facades\Storage;
-use GrahamCampbell\Markdown\Facades\Markdown;
-use League\CommonMark\MarkdownConverterInterface;
+use League\CommonMark\CommonMarkConverter;
 
 class Parser
 {
-
     private $raw_text;
     private $working_text;
     private $html_text;
@@ -21,15 +19,11 @@ class Parser
 
     private $links;
 
-    private $markdown;
-
     public function __construct(Document $document)
     {
         $this->document = $document;
 
         $this->raw_text = $document->body;
-
-        $this->markdown = new Markdown();
     }
 
     public function links()
@@ -219,6 +213,7 @@ class Parser
 
     static public function html($text)
     {
-        return trim(Markdown::convertToHtml($text));
+        $parser = new CommonMarkConverter();
+        return trim($parser->convertToHtml($text));
     }
 }

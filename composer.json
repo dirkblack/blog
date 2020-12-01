@@ -3,7 +3,7 @@
     "description": "Laravel Blog Package",
     "type": "library",
     "minimum-stability": "dev",
-    "prefer-stable": false,
+    "prefer-stable": true,
     "require": {},
     "require-dev": {
         "matthewbdaly/artisan-standalone": "0.0.*",
