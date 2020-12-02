@@ -17,6 +17,8 @@ Route::group(['prefix' => '/Blog', 'as' => 'blog.', 'middleware' => ['web', 'aut
     Route::get('/subscribe/force', 'DarkBlog\Http\Controllers\BlogController@subscribeForce')->name('subscribe.force');
     Route::post('/subscribe/force', 'DarkBlog\Http\Controllers\BlogController@storeSubscriptionForce')->name('subscribe.force.post');
     Route::get('/subscribers', 'DarkBlog\Http\Controllers\BlogController@showSubscribers')->name('subscribers');
+    Route::get('/upload', 'DarkBlog\Http\Controllers\BlogController@upload')->name('upload');
+    Route::post('/upload', 'DarkBlog\Http\Controllers\BlogController@storeFile')->name('store.file');
     Route::post('/{post}', 'DarkBlog\Http\Controllers\BlogController@update');
     Route::delete('/{post}', 'DarkBlog\Http\Controllers\BlogController@destroy')->name('delete');
     Route::post('/{post}/publish', 'DarkBlog\Http\Controllers\BlogController@publish')->name('publish');
