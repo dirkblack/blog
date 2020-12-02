@@ -8,6 +8,7 @@ use DarkBlog\Models\Tag;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class BlogController extends Controller
 {
@@ -202,5 +203,20 @@ class BlogController extends Controller
         $post->schedule($carbon);
 
         return redirect('/Blog');
+    }
+
+    public function upload(Request $request)
+    {
+        $file_name = isset($request['file']) ? $request['file'] : null;
+        return view('darkblog::upload', ['file' => $file_name]);
+    }
+
+    public function storeFile(Request $request)
+    {
+        $path = $request->file('file_upload')->storeAs(
+            'public', $request['file_name']
+        );
+
+        return redirect(route('blog.drafts'));
     }
 }

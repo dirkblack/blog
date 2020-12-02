@@ -4,8 +4,13 @@ namespace DarkBlog;
 
 use App\Models\Document;
 use App\Models\DocumentLink;
+use DarkBlog\Http\Markdown\ImageLinkRenderer;
 use Illuminate\Support\Facades\Storage;
 use League\CommonMark\CommonMarkConverter;
+use League\CommonMark\Environment;
+use League\CommonMark\DocParser;
+use League\CommonMark\HtmlRenderer;
+use League\CommonMark\Inline\Element\Image;
 
 class Parser
 {
@@ -18,6 +23,23 @@ class Parser
     private $existing_links;
 
     private $links;
+
+    static public function html($text)
+    {
+        $environment = Environment::createCommonMarkEnvironment();
+        $environment->setConfig([
+//            'html_input' => 'strip',
+        ]);
+
+        // We want custom handle image rendering
+        $environment->addInlineRenderer(Image::class, new ImageLinkRenderer());
+
+        $parser = new DocParser($environment);
+        $htmlRenderer = new HtmlRenderer($environment);
+
+        $document = $parser->parse($text);
+        return $htmlRenderer->renderBlock($document);
+    }
 
     public function __construct(Document $document)
     {
@@ -209,11 +231,5 @@ class Parser
         $this->existing_links = DocumentLink::where('document_id', $this->document->id)
             ->where('link_id', '>', 0)
             ->get();
-    }
-
-    static public function html($text)
-    {
-        $parser = new CommonMarkConverter();
-        return trim($parser->convertToHtml($text));
     }
 }
