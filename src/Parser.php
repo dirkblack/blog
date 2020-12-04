@@ -6,7 +6,6 @@ use App\Models\Document;
 use App\Models\DocumentLink;
 use DarkBlog\Http\Markdown\ImageLinkRenderer;
 use Illuminate\Support\Facades\Storage;
-use League\CommonMark\CommonMarkConverter;
 use League\CommonMark\Environment;
 use League\CommonMark\DocParser;
 use League\CommonMark\HtmlRenderer;
@@ -38,7 +37,8 @@ class Parser
         $htmlRenderer = new HtmlRenderer($environment);
 
         $document = $parser->parse($text);
-        return $htmlRenderer->renderBlock($document);
+
+        return trim($htmlRenderer->renderBlock($document));
     }
 
     public function __construct(Document $document)

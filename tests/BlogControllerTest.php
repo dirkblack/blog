@@ -27,15 +27,10 @@ class BlogControllerTest extends TestCase
     public $response;
     public $user;
 
-    public function setUp(): void
-    {
-        parent::setUp();
-    }
-
     /** @test */
     public function guest_can_see_index()
     {
-        $published_posts = factory(Post::class, 5)->create([
+        $published_posts = Post::factory()->count(5)->create([
             'published' => Carbon::now()->subDay()->toDateTimeString()
         ]);
 
@@ -86,7 +81,7 @@ class BlogControllerTest extends TestCase
     /** @test */
     public function show_post()
     {
-        $post = factory(Post::class)->create([
+        $post = Post::factory()->create([
             'published' => Carbon::now()->subDay()->toDateTimeString()
         ]);
 
@@ -152,11 +147,11 @@ class BlogControllerTest extends TestCase
     /** @test */
     public function see_published_posts()
     {
-        $published_posts = factory(Post::class, 5)->create([
+        $published_posts = Post::factory()->count(5)->create([
             'published' => Carbon::now()->subDay()->toDateTimeString()
         ]);
 
-        $draft_post = factory(Post::class)->create();
+        $draft_post = Post::factory()->create();
 
         $response = $this->get('/Blog');
 
@@ -173,7 +168,7 @@ class BlogControllerTest extends TestCase
     /** @test */
     public function dont_see_draft_posts()
     {
-        $draft_post = factory(Post::class)->create();
+        $draft_post = Post::factory()->create();
 
         $this->get('/Blog')
             ->assertDontSee($draft_post->title);
@@ -231,11 +226,11 @@ class BlogControllerTest extends TestCase
     /** @test */
     public function view_posts_by_tag()
     {
-        $published_posts = factory(Post::class, 3)->create([
+        $published_posts = Post::factory()->count(3)->create([
             'published' => Carbon::now()->subDay()->toDateTimeString()
         ]);
 
-        $tags = factory(Tag::class, 3)->create();
+        $tags = Tag::factory()->count(3)->create();
 
         // Apply each tag once to a different posts
         foreach ($published_posts as $index => $post) {
@@ -265,7 +260,7 @@ class BlogControllerTest extends TestCase
     {
         $this->createAndLoginUser();
 
-        $draft_post = factory(Post::class)->create();
+        $draft_post = Post::factory()->create();
 
         $this->get('/Blog/' . $draft_post->id)
             ->assertSee($draft_post->title);
@@ -274,9 +269,10 @@ class BlogControllerTest extends TestCase
     /** @test */
     public function see_tags_on_main_page()
     {
-        $tags = factory(Tag::class, 3)->create();
+        $tags = Tag::factory()->count(3)->create();
 
         $this->get('/')
+            ->assertOk()
             ->assertSee($tags[0]->tag);
     }
 
@@ -286,7 +282,7 @@ class BlogControllerTest extends TestCase
         $this->createAndLoginUser();
 
         // begin with a draft post
-        $post = factory(Post::class)
+        $post = Post::factory()
             ->create([
             ]);
 
@@ -313,7 +309,7 @@ class BlogControllerTest extends TestCase
         $this->createAndLoginUser();
 
         // Begin with a draft post
-        $post = factory(Post::class)
+        $post = Post::factory()
             ->create([
             ]);
 
@@ -382,9 +378,11 @@ class BlogControllerTest extends TestCase
     {
         $this->createAndLoginUser();
 
-        $users = factory(Subscriber::class, 3)->create();
+        $users = Subscriber::factory()->count(3)->create();
 
         $response = $this->get('/Blog/subscribers');
+
+        $response->assertOk();
 
         foreach ($users as $user) {
             $response->assertSee($user->first_name);
@@ -396,7 +394,7 @@ class BlogControllerTest extends TestCase
     {
         $this->createAndLoginUser();
 
-        $draft_post = factory(Post::class)->create();
+        $draft_post = Post::factory()->create();
 
         $this->delete(route('blog.delete', ['post' => $draft_post->id]));
 
@@ -410,8 +408,8 @@ class BlogControllerTest extends TestCase
     {
         $this->createAndLoginUser();
 
-        $drafts = factory(Post::class, 3)->create();
-        $published = factory(Post::class, 11)->create([
+        $drafts = Post::factory()->count(3)->create();
+        $published = Post::factory()->count(11)->create([
             'published' => Carbon::now()->subSecond()->toDateTimeString()
         ]);
 
@@ -456,8 +454,8 @@ class BlogControllerTest extends TestCase
     {
         $this->createAndLoginUser();
 
-        $drafts = factory(Post::class, 3)->create();
-        $published = factory(Post::class)->create([
+        $drafts = Post::factory()->count(3)->create();
+        $published = Post::factory()->create([
             'published' => Carbon::now()->subSecond()->toDateTimeString()
         ]);
 
@@ -475,8 +473,8 @@ class BlogControllerTest extends TestCase
     {
         $this->createAndLoginUser();
 
-        $draft = factory(Post::class)->create();
-        $published = factory(Post::class, 3)->create([
+        $draft = Post::factory()->create();
+        $published = Post::factory()->count(3)->create([
             'published' => Carbon::now()->subSecond()->toDateTimeString()
         ]);
 
@@ -494,8 +492,8 @@ class BlogControllerTest extends TestCase
     {
         $this->createAndLoginUser();
 
-        $draft = factory(Post::class)->create();
-        $scheduled = factory(Post::class, 3)->create([
+        $draft = Post::factory()->create();
+        $scheduled = Post::factory()->count(3)->create([
             'published' => Carbon::now()->addSeconds(5)->toDateTimeString()
         ]);
 
@@ -513,11 +511,11 @@ class BlogControllerTest extends TestCase
     {
         Mail::fake();
 
-        $post = factory(Post::class)->create([
+        $post = Post::factory()->create([
             'published' => Carbon::now()->subSecond()->toDateTimeString()
         ]);
 
-        $subscribers = factory(Subscriber::class, 2)->create();
+        $subscribers = Subscriber::factory()->count(2)->create();
 
         Artisan::call(MailSubscribers::class);
 
@@ -541,7 +539,7 @@ class BlogControllerTest extends TestCase
         $prologue = 'This email should contain a prologue';
         $epilogue = 'This email has an epilogue';
 
-        $post = factory(Post::class)->create([
+        $post = Post::factory()->create([
             'published' => Carbon::now()->subSecond()->toDateTimeString(),
             'prologue'  => $prologue,
             'epilogue'  => $epilogue
@@ -605,7 +603,7 @@ class BlogControllerTest extends TestCase
     /** @test */
     public function show_post_by_slug()
     {
-        $post = factory(Post::class)->create([
+        $post = Post::factory()->create([
             'published' => Carbon::now()->subDay()->toDateTimeString()
         ]);
 
@@ -631,7 +629,7 @@ class BlogControllerTest extends TestCase
 
     private function createAndLoginUser()
     {
-        $this->user = factory(User::class)->create();
+        $this->user = User::factory()->create();
 
         $this->response = $this->actingAs($this->user);
 
@@ -640,7 +638,7 @@ class BlogControllerTest extends TestCase
 
     private function createAndLoginMaster()
     {
-        $this->user = factory(User::class)->create(['is_super_admin' => true]);
+        $this->user = User::factory()->create(['is_super_admin' => true]);
 
         $this->response = $this->actingAs($this->user);
 

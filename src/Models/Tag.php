@@ -2,11 +2,20 @@
 
 namespace DarkBlog\Models;
 
+use DarkBlog\Factories\TagFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Tag extends Model
 {
+    use HasFactory;
+
     public $fillable = ['name'];
+
+    protected static function newFactory()
+    {
+        return new TagFactory();
+    }
 
     public function tagged()
     {
@@ -17,12 +26,4 @@ class Tag extends Model
     {
         return $this->morphedByMany(Post::class, 'tagged');
     }
-
-//    public function scopePublishedPosts($query)
-//    {
-//        return $query->posts()
-//            ->where('status', 'published')
-//            ->where('published', '<', Carbon::now()->toDateTimeString())
-//            ->orderBy('published', 'dsc');
-//    }
 }
