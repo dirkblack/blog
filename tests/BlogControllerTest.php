@@ -52,6 +52,7 @@ class BlogControllerTest extends TestCase
 
         $test_title = 'This is a Test Title';
         $test_body = 'This is the test body';
+        $test_preview = 'I can add a preview to an article';
 
         $this->get(route('blog.admin'))
             ->assertOk()
@@ -62,8 +63,9 @@ class BlogControllerTest extends TestCase
             ->assertSee('Create');
 
         $this->post('/Blog', [
-            'title' => $test_title,
-            'body'  => $test_body
+            'title'   => $test_title,
+            'body'    => $test_body,
+            'preview' => $test_preview
         ])->assertRedirect('/Blog/drafts');
 
         $this->get('/Blog/drafts')
@@ -72,6 +74,7 @@ class BlogControllerTest extends TestCase
         $this->assertDatabaseHas('posts', [
             'title'     => $test_title,
             'body'      => $test_body,
+            'preview'   => $test_preview,
             'published' => null,
             'user_id'   => $this->user->id,
             'slug'      => Slug::slugify($test_title)
@@ -132,8 +135,9 @@ class BlogControllerTest extends TestCase
             ->assertSee($post->title);
 
         $this->post('/Blog/' . $post->id, [
-            'title' => 'Updated Title',
-            'body'  => 'Updated Body',
+            'title'   => 'Updated Title',
+            'body'    => 'Updated Body',
+            'preview' => 'has a preview'
         ])->assertRedirect('/Blog/' . $post->id);
 
         $this->assertDatabaseHas('posts', [
@@ -141,6 +145,7 @@ class BlogControllerTest extends TestCase
             'user_id' => $this->user->id,
             'title'   => 'Updated Title',
             'body'    => 'Updated Body',
+            'preview' => 'has a preview'
         ]);
     }
 

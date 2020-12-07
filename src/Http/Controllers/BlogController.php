@@ -43,7 +43,8 @@ class BlogController extends Controller
             'title'    => $request['title'],
             'body'     => $request['body'],
             'prologue' => $request['prologue'],
-            'epilogue' => $request['epilogue']
+            'epilogue' => $request['epilogue'],
+            'preview'  => $request['preview']
         ]);
 
         return redirect('/Blog/drafts');
@@ -155,6 +156,7 @@ class BlogController extends Controller
         $post->published = $request['published'];
         $post->prologue = $request['prologue'];
         $post->epilogue = $request['epilogue'];
+        $post->preview = $request['preview'];
         $post->save();
 
         return redirect('/Blog/' . $post->id);
@@ -208,6 +210,7 @@ class BlogController extends Controller
     public function upload(Request $request)
     {
         $file_name = isset($request['file']) ? $request['file'] : null;
+
         return view('darkblog::upload', ['file' => $file_name]);
     }
 

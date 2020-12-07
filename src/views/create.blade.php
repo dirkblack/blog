@@ -24,6 +24,10 @@
                     <label for="body">Epilogue</label>
                     <textarea class="form-control" name="epilogue" cols="30" rows="5"></textarea>
                 </div>
+                <div class="form-group">
+                    <label for="body">Preview Text</label>
+                    <textarea class="form-control" name="preview" cols="30" rows="5"></textarea>
+                </div>
             </div>
             <div class="card-footer">
                 <div class="form-group">

@@ -41,6 +41,10 @@
             <label for="body">Epilogue</label>
             <textarea class="form-control" name="epilogue" cols="30" rows="5">{{ $post->epilogue }}</textarea>
         </div>
+        <div class="form-group">
+            <label for="body">Preview Text</label>
+            <textarea class="form-control" name="preview" cols="30" rows="5">{{ $post->preview }}</textarea>
+        </div>
 
         <div class="form-row">
             <div class="col">
