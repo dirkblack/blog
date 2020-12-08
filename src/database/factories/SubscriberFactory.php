@@ -1,10 +1,19 @@
 <?php
 
-use Faker\Generator as Faker;
+namespace DarkBlog\Factories;
 
-$factory->define(\DarkBlog\Models\Subscriber::class, function (Faker $faker) {
-    return [
-        'email' => $faker->email,
-        'name' => $faker->firstName . ' ' .$faker->lastName
-    ];
-});
+use DarkBlog\Models\Subscriber;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+class SubscriberFactory extends Factory
+{
+    protected $model = Subscriber::class;
+
+    public function definition()
+    {
+        return [
+            'email' => $this->faker->email,
+            'name'  => $this->faker->firstName . ' ' . $this->faker->lastName
+        ];
+    }
+}

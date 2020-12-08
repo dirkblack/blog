@@ -3,17 +3,26 @@
 namespace DarkBlog\Models;
 
 use Carbon\Carbon;
+use DarkBlog\Factories\PostFactory;
 use Illuminate\Database\Eloquent\Model;
 use DarkBlog\Parser;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Post extends Model
 {
+    use HasFactory;
+
     protected $guarded = [];
 
     protected $dates = ['published'];
 
     const STATUS_DRAFT = 'draft';
     const STATUS_PUBLISHED = 'published';
+
+    protected static function newFactory()
+    {
+        return new PostFactory();
+    }
 
     protected static function booted()
     {

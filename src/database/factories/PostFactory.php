@@ -1,15 +1,23 @@
 <?php
 
-use Faker\Generator as Faker;
+namespace DarkBlog\Factories;
 
-$factory->define(\DarkBlog\Models\Post::class, function (Faker $faker) {
-    $title = $faker->sentence;
-    return [
-        'title' => $title,
-        'slug' => \DarkBlog\Models\Slug::generate($title),
-        'body' => $faker->paragraph,
-        'user_id' => function () {
-            return factory(\App\Models\User::class)->create()->id;
-        }
-    ];
-});
+use App\Models\User;
+use DarkBlog\Models\Post;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+class PostFactory extends Factory
+{
+    protected $model = Post::class;
+
+    public function definition()
+    {
+        $title = $this->faker->sentence;
+        return [
+            'title' => $title,
+            'slug' => \DarkBlog\Models\Slug::generate($title),
+            'body' => $this->faker->paragraph,
+            'user_id' => User::factory()
+        ];
+    }
+}

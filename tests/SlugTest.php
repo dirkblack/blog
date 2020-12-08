@@ -22,7 +22,7 @@ class SlugTest extends TestCase
         $test_title = 'this is a test title';
         $slug_no_1 = Slug::generate($test_title);
 
-        factory(Post::class)->create([
+        Post::factory()->create([
             'title' => $test_title
         ]);
 
