@@ -2,12 +2,14 @@
 
 namespace DarkBlog\Http\Controllers;
 
+use DarkBlog\Mail\SubscriberEmail;
 use DarkBlog\Models\Post;
 use DarkBlog\Models\Subscriber;
 use DarkBlog\Models\Tag;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class BlogController extends Controller
@@ -221,5 +223,12 @@ class BlogController extends Controller
         );
 
         return redirect(route('blog.drafts'));
+    }
+
+    public function sendTestEmail(Request $request, Post $post)
+    {
+        Mail::to($request->user()->email)->send(new SubscriberEmail($post));
+
+        return redirect((route('blog.show', ['slug' => $post->slug])));
     }
 }

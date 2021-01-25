@@ -618,6 +618,24 @@ class BlogControllerTest extends TestCase
             ->assertSee($post->body);
     }
 
+
+    /** @test */
+    public function test_email()
+    {
+        $this->createAndLoginMaster();
+
+        // Master can send a test email of the next scheduled post
+        $draft = Post::factory()->create([
+            'user_id' => $this->user->id
+        ]);
+
+        $this->get('/Blog/' . $draft->id)
+            ->assertSee('Test Email');
+
+        $this->get('/Blog/' . $draft->id . '/email')
+            ->assertRedirect(route('blog.show', ['slug' => $draft->slug]));
+    }
+
     // Guest can subscribe
 
     // subscriber can unsubscribe

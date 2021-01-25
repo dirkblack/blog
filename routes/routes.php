@@ -1,7 +1,7 @@
 <?php
 
 Route::get('email', function () {
-    $post = \DarkBlog\Models\Post::find(2);
+    $post = \DarkBlog\Models\Post::find(1);
 
     return new \DarkBlog\Mail\SubscriberEmail($post);
 });
@@ -25,6 +25,7 @@ Route::group(['prefix' => '/Blog', 'as' => 'blog.', 'middleware' => ['web', 'aut
     Route::post('/{post}/schedule/{schedule}', 'DarkBlog\Http\Controllers\BlogController@schedule')->name('schedule');
     Route::get('/{post}/edit', 'DarkBlog\Http\Controllers\BlogController@edit')->name('edit');
     Route::post('/{post}/tag/{tag}', 'DarkBlog\Http\Controllers\BlogController@addTag');
+    Route::get('/{post}/email', 'DarkBlog\Http\Controllers\BlogController@sendTestEmail');
 });
 
 // Public Blog Routes

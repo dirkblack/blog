@@ -17,17 +17,17 @@ class ImageLinkRenderer implements InlineRendererInterface
             throw new \InvalidArgumentException('Incompatible inline type: ' . get_class($inline));
         }
 
-        $attrs = array();
+        $attrs = [];
 
         $image_url = $inline->getUrl();
-        if ($this->imageFileExists($image_url)) {
-            $attrs['src'] = asset('storage/'.$image_url);
-        }
-        else {
+
+        if ( ! $this->imageFileExists($image_url)) {
             $attrs['href'] = route('blog.upload', ['file' => $image_url]);
 
             return new HtmlElement('a', $attrs, $htmlRenderer->renderInlines($inline->children()));
         }
+
+        $attrs['src'] = asset('storage/' . $image_url);
 
         if (isset($inline->data['title'])) {
             $attrs['title'] = $inline->data['title'];

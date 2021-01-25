@@ -7,6 +7,7 @@
                         @csrf
                         <input type="submit" class="btn btn-primary btn-sm" value="Publish">
                     </form>
+                <a href="/Blog/{{ $post->id }}/email" class="btn btn-secondary btn-sm">Test Email</a>
                 @endif
                 <a href="/Blog/{{ $post->id }}/edit" class="btn btn-secondary btn-sm">Edit</a>
             @endcan
