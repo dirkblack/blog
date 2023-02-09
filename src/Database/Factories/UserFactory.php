@@ -1,6 +1,6 @@
 <?php
 
-namespace DarkBlog\Factories;
+namespace DarkBlog\Database\Factories;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
