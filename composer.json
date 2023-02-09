@@ -4,18 +4,20 @@
     "type": "library",
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "require": {},
+    "require": {
+        "league/commonmark": "^2.3"
+    },
     "require-dev": {
-        "matthewbdaly/artisan-standalone": "0.0.*",
-        "mockery/mockery": "~1.0",
-        "orchestra/testbench": "^4.0",
-        "orchestra/testbench-browser-kit": "^4.0",
-        "php-coveralls/php-coveralls": "^2.1",
-        "phpunit/phpunit": "^8.0",
-        "psy/psysh": "^0.9.9",
-        "sebastian/phpcpd": "^4.0",
-        "squizlabs/php_codesniffer": "^3.4",
-        "vimeo/psalm": "^3.5"
+        "nunomaduro/collision": "^6.0",
+        "nunomaduro/larastan": "^2.0.1",
+        "orchestra/testbench": "^7.0",
+        "pestphp/pest": "^1.21",
+        "pestphp/pest-plugin-laravel": "^1.1",
+        "phpstan/extension-installer": "^1.1",
+        "phpstan/phpstan-deprecation-rules": "^1.0",
+        "phpstan/phpstan-phpunit": "^1.0",
+        "phpunit/phpunit": "^9.5",
+        "spatie/laravel-ray": "^1.26"
     },
     "license": "MIT",
     "authors": [
@@ -27,8 +29,8 @@
     "autoload": {
         "psr-4": {
             "DarkBlog\\": "src/",
-            "DarkBlog\\\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/"
+            "DarkBlog\\\\Factories\\": "Database/Factories/",
+            "Database\\Seeders\\": "Database/seeders/"
         }
     },
     "autoload-dev": {
@@ -52,7 +54,11 @@
     "config": {
         "preferred-install": "dist",
         "sort-packages": true,
-        "optimize-autoloader": true
+        "optimize-autoloader": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
     },
     "extra": {
         "laravel": {
