@@ -7,9 +7,10 @@ use App\Models\DocumentLink;
 use DarkBlog\Http\Markdown\ImageLinkRenderer;
 use Illuminate\Support\Facades\Storage;
 use League\CommonMark\Environment;
-use League\CommonMark\DocParser;
-use League\CommonMark\HtmlRenderer;
-use League\CommonMark\Inline\Element\Image;
+//use League\CommonMark\DocParser;
+//use League\CommonMark\HtmlRenderer;
+//use League\CommonMark\Inline\Element\Image;
+use League\CommonMark\CommonMarkConverter;
 
 class Parser
 {
@@ -25,20 +26,20 @@ class Parser
 
     static public function html($text)
     {
-        $environment = Environment::createCommonMarkEnvironment();
-        $environment->setConfig([
-//            'html_input' => 'strip',
-        ]);
+//        $environment = Environment::createCommonMarkEnvironment();
+//        $environment->setConfig([
+////            'html_input' => 'strip',
+//        ]);
+//
+//        // We want custom handle image rendering
+//        $environment->addInlineRenderer(Image::class, new ImageLinkRenderer());
 
-        // We want custom handle image rendering
-        $environment->addInlineRenderer(Image::class, new ImageLinkRenderer());
+        $parser = new CommonMarkConverter();
+//        $htmlRenderer = new HtmlRenderer($environment);
 
-        $parser = new DocParser($environment);
-        $htmlRenderer = new HtmlRenderer($environment);
+//        $document = $parser->parse($text);
 
-        $document = $parser->parse($text);
-
-        return trim($htmlRenderer->renderBlock($document));
+        return trim($parser->convert($text));
     }
 
     public function __construct(Document $document)
