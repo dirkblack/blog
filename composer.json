@@ -5,7 +5,8 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "league/commonmark": "^2.3"
+        "league/commonmark": "^2.3",
+        "spatie/laravel-package-tools": "^1.15"
     },
     "require-dev": {
         "nunomaduro/collision": "^6.0",
@@ -63,7 +64,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "DarkBlog\\Providers\\ServiceProvider"
+                "DarkBlog\\BlogServiceProvider"
             ]
         }
     }
