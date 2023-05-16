@@ -28,29 +28,29 @@ class ServiceProvider extends BaseServiceProvider
      */
     public function boot()
     {
-        $this->loadMigrationsFrom(__DIR__ . '/../Database/migrations');
-        $this->loadRoutesFrom(__DIR__ . '/../../routes/routes.php');
-        $this->loadViewsFrom(__DIR__ . '/../views', 'darkblog');
-//        $this->loadFactoriesFrom(__DIR__ . '/../database/factories');
-        $this->publishes([
-            __DIR__ . '/../views' => resource_path('views/vendor/darkblog')
-        ]);
-
-        // Mail Markdown templates
-        $this->loadViewsFrom(__DIR__ . '/../views/mail/html', 'mail');
-
-        $this->registerPolicies();
-
-        View::composer(
-            'darkblog::_admin_menu',
-            BlogDashboardComposer::class
-        );
-
-        if ($this->app->runningInConsole()) {
-            $this->commands([
-                MailSubscribers::class
-            ]);
-        }
+//        $this->loadMigrationsFrom(__DIR__ . '/../Database/migrations');
+//        $this->loadRoutesFrom(__DIR__ . '/../../routes/routes.php');
+//        $this->loadViewsFrom(__DIR__ . '/../views', 'darkblog');
+////        $this->loadFactoriesFrom(__DIR__ . '/../database/factories');
+//        $this->publishes([
+//            __DIR__ . '/../views' => resource_path('views/vendor/darkblog')
+//        ]);
+//
+//        // Mail Markdown templates
+//        $this->loadViewsFrom(__DIR__ . '/../views/mail/html', 'mail');
+//
+//        $this->registerPolicies();
+//
+//        View::composer(
+//            'darkblog::_admin_menu',
+//            BlogDashboardComposer::class
+//        );
+//
+//        if ($this->app->runningInConsole()) {
+//            $this->commands([
+//                MailSubscribers::class
+//            ]);
+//        }
 
     }
 
