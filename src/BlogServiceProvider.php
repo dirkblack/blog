@@ -49,6 +49,7 @@ class BlogServiceProvider extends PackageServiceProvider
 
 //        $this->app->bind(HasTimedResources::class, TestOwner::class);
 
+        
         // In the project place this in the RouteServiceProvider to register the routes
 //        Route::blog();
     }
