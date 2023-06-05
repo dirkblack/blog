@@ -18,19 +18,19 @@ class BlogController extends Controller
     {
         $posts = Post::published()->get();
 
-        return view('darkblog::index', [
+        return view('blog::index', [
             'posts' => $posts
         ]);
     }
 
     public function admin(Request $request)
     {
-        return view('darkblog::admin');
+        return view('blog::admin');
     }
 
     public function edit($id)
     {
-        return view('darkblog::edit', ['post' => Post::find($id)]);
+        return view('blog::edit', ['post' => Post::find($id)]);
     }
 
     public function store(Request $request)
@@ -89,14 +89,14 @@ class BlogController extends Controller
 
     public function subscribe()
     {
-        return view('darkblog::subscribe');
+        return view('blog::subscribe');
     }
 
     public function subscribeForce(Request $request)
     {
         $this->getPermittedUserOrAbort($request->user(), 'subscribe.force');
 
-        return view('darkblog::subscribe-force');
+        return view('blog::subscribe-force');
     }
 
     public function show($slug_or_id)
@@ -112,14 +112,14 @@ class BlogController extends Controller
             throw new \Exception('No Post Found');
         }
 
-        return view('darkblog::show', ['post' => $post]);
+        return view('blog::show', ['post' => $post]);
     }
 
     public function showDrafts(Request $request)
     {
         $posts = Post::draft()->get();
 
-        return view('darkblog::drafts', [
+        return view('blog::drafts', [
             'posts' => $posts
         ]);
     }
@@ -128,7 +128,7 @@ class BlogController extends Controller
     {
         $posts = Post::published()->get();
 
-        return view('darkblog::published', [
+        return view('blog::published', [
             'posts' => $posts
         ]);
     }
@@ -137,7 +137,7 @@ class BlogController extends Controller
     {
         $posts = Post::scheduled()->get();
 
-        return view('darkblog::drafts', [
+        return view('blog::drafts', [
             'posts' => $posts
         ]);
     }
@@ -146,7 +146,7 @@ class BlogController extends Controller
     {
         $subscribers = Subscriber::all();
 
-        return view('darkblog::subscribers', [
+        return view('blog::subscribers', [
             'subscribers' => $subscribers
         ]);
     }
@@ -175,7 +175,7 @@ class BlogController extends Controller
     {
         $posts = Post::tagged($tag)->get();
 
-        return view('darkblog::tag', [
+        return view('blog::tag', [
             'tag'   => $tag,
             'posts' => $posts
         ]);
@@ -183,7 +183,7 @@ class BlogController extends Controller
 
     public function create()
     {
-        return view('darkblog::create');
+        return view('blog::create');
     }
 
     public function destroy(Request $request, Post $post)
@@ -213,7 +213,7 @@ class BlogController extends Controller
     {
         $file_name = isset($request['file']) ? $request['file'] : null;
 
-        return view('darkblog::upload', ['file' => $file_name]);
+        return view('blog::upload', ['file' => $file_name]);
     }
 
     public function storeFile(Request $request)

@@ -9,5 +9,5 @@
 @endpush
 
 @section('content')
-    @include('darkblog::_post', ['post' => $post])
+    @include('blog::_post', ['post' => $post])
 @endsection

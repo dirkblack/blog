@@ -1,5 +1,5 @@
 @extends('layouts.blog')
 
 @section('content')
-    @include('darkblog::_admin_menu')
+    @include('blog::_admin_menu')
 @endsection

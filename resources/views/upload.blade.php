@@ -1,7 +1,7 @@
 @extends('layouts.blog')
 
 @section('content')
-    @include('darkblog::_admin_menu')
+    @include('blog::_admin_menu')
     <form method="POST" class="form-horizontal" action="{{ route('blog.store.file') }}" enctype="multipart/form-data">
         {!! csrf_field() !!}
         <input type="hidden" id="file_name" name="file_name" value="{{ $file }}">

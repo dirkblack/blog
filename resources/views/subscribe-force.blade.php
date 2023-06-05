@@ -1,7 +1,7 @@
 @extends('layouts.blog')
 
 @section('content')
-    @include('darkblog::_admin_menu', ['title' => 'Subscribe'])
+    @include('blog::_admin_menu', ['title' => 'Subscribe'])
     <p>New blog posts will be delivered by email.</p>
 
     <form method="POST" class="form-horizontal" action="{{ route('blog.subscribe.force.post') }}">

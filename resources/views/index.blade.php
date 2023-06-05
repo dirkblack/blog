@@ -1,4 +1,4 @@
-@extends('layouts.blog')
+@extends(config('blog.layout'))
 
 @section('content')
 
@@ -8,7 +8,7 @@
 
     @if(count($posts) > 0)
         @foreach($posts as $post)
-            @include('darkblog::_post', ['post' => $post])
+            @include('blog::_post', ['post' => $post])
         @endforeach
     @else
         <p>No Posts have been published</p>

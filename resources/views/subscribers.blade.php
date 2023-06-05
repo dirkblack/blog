@@ -1,7 +1,7 @@
 @extends('layouts.blog')
 
 @section('content')
-    @include('darkblog::_admin_menu', ['title' => 'Subscribers'])
+    @include('blog::_admin_menu', ['title' => 'Subscribers'])
     <a href="{{ route('blog.subscribe.force') }}" class="btn btn-primary">Add Subscriber</a>
     <p>Count: {{ count($subscribers) }}</p>
     <table class="table">

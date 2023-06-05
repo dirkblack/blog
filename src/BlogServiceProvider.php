@@ -27,6 +27,7 @@ class BlogServiceProvider extends PackageServiceProvider
             ->hasConfigFile()
             ->hasViews()
             ->hasMigration('create_tags_table')
+            ->hasRoutes(['web', 'api'])
             ->hasCommand(MailSubscribers::class);
     }
 
