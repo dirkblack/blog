@@ -2,14 +2,12 @@
 
 namespace DarkBlog;
 
-use DarkBlack\Blog\Commands\BlogCommand;
-use DarkBlack\Blog\Http\Api\TimesheetApiController;
-use DarkBlack\Blog\Http\Controllers\TimesheetController;
-use DarkBlack\Blog\Tests\TestSupport\TestModels\TestOwner;
+use DarkBlog\Composers\BlogDashboardComposer;
 use DarkBlog\Console\Commands\MailSubscribers;
 use DarkBlog\Http\Controllers\BlogApiController;
 use DarkBlog\Http\Controllers\BlogController;
 use Illuminate\Support\Facades\Route;
+use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -26,9 +24,22 @@ class BlogServiceProvider extends PackageServiceProvider
             ->name('blog')
             ->hasConfigFile()
             ->hasViews()
+            ->hasViewComposer('*', BlogDashboardComposer::class)
+            ->hasMigration('create_posts_table')
             ->hasMigration('create_tags_table')
+            ->hasMigration('create_tagged_table')
+            ->hasMigration('create_subscribers_table')
             ->hasRoutes(['web', 'api'])
-            ->hasCommand(MailSubscribers::class);
+            ->hasAssets()
+            ->hasCommand(MailSubscribers::class)
+            ->hasInstallCommand(function(InstallCommand $command) {
+                $command
+                    ->publishConfigFile()
+                    ->publishAssets()
+                    ->publishMigrations()
+//                    ->askToRunMigrations()
+                    ->copyAndRegisterServiceProviderInApp();
+            });
     }
 
     public function packageRegistered()

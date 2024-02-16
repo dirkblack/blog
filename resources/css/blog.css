@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+h1, h2, h3, h4 {
+    @apply font-raleway;
+}
+h1 {
+    @apply text-4xl font-extrabold py-4;
+}
+h2 {
+    @apply text-2xl font-extrabold py-4;
+}
+h3 {
+    @apply text-lg font-bold py-2 pt-4
+}
+h4 {
+    @apply font-bold py-2 my-2 pt-2 italic
+}
+p {
+    @apply py-2;
+}
+a {
+    @apply text-primary hover:text-secondary;
+}
+table {
+    @apply min-w-full divide-y divide-gray-200;
+}
+tr {
+    @apply bg-white border-b border-gray-200;
+}
+td {
+    @apply py-1 px-4 whitespace-nowrap;
+}
+th {
+    @apply pt-3 pb-2 px-4;
+}
+ul {
+    @apply list-disc ml-6;
+}
+
+.blog {
+    @apply flex justify-center;
+}
+.blog_nav_items {
+    @apply flex gap-4 list-none;
+}
+.blog_post {
+    @apply bg-amber-100
+}

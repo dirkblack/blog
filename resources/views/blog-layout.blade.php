@@ -12,23 +12,41 @@
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('/vendor/blog/blog.css') }}" rel="stylesheet">
 </head>
-<body id="body" class="d-flex flex-column h-100">
-<div id="app" class="">
-    <main id="main" class="main pt-10">
-        <div class="container-fluid mt-5">
-            <div class="row">
-                <div class="col-lg-8 col-md-12 offset-lg-2 blog">
-                    @yield('content')
-                </div>
-            </div>
-        </div>
-    </main>
-{{--    <footer id="footer" class="footer d-flex flex-column bg-black px-4 px-lg-7">--}}
-{{--        @include('footer')--}}
-{{--    </footer>--}}
-</div>
+<body id="body" class="h-100">
+    <div class="flex justify-center">
+        <main id="main" class="w-full max-w-screen-lg flex flex-col">
+    {{--        Default Navigation / login--}}
+            <header id="header" class="w-full relative bg-secondary">
+                <nav id="navbar" class="w-full flex justify-end px-4">
+                    <ul class="blog_nav_items">
+                        <li class="nav-item mr-lg-5 mb-2 mb-lg-0">
+                            <a class="nav-link px-0{{ (request()->is('Blog')) ? ' active' : '' }}" href="{{ route('blog') }}">Blog</a>
+                        </li>
+                        @guest
+                            <li class="nav-item mr-lg-5 mb-0">
+                                <a class="nav-link px-0" href="{{ route('login') }}">Login</a>
+                            </li>
+                        @endguest
+                        @auth
+                            <li class="nav-item dropdown mr-lg-5">
+                                <a id="navbarDropdown" class="nav-link px-0 dropdown-toggle text-secondary" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ Auth::user()->name }} <span class="caret"></span>
+                                </a>
 
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="\logout">Log Out</a>
+                                </div>
+                            </li>
+                        @endauth
+                    </ul>
+                </nav>
+            </header>
+            <div class="blog bg-gray-50">
+                @yield('content')
+            </div>
+        </main>
+    </div>
 </body>
 </html>

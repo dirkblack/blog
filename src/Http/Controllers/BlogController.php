@@ -8,15 +8,19 @@ use DarkBlog\Models\Subscriber;
 use DarkBlog\Models\Tag;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\View;
 
 class BlogController extends Controller
 {
     public function index()
     {
         $posts = Post::published()->get();
+
+        View::share(['user' => Auth::user()]);
 
         return view('blog::index', [
             'posts' => $posts

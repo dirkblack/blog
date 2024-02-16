@@ -1,7 +1,7 @@
-<div class="card mt-3 mb-2">
-    <div class="card-header">
-        <div class="float-right">
-            @can('update', $post)
+<div class="card mt-3 mb-2 blog_post">
+    <div class="flex">
+        @can('update', $post)
+            <div class="float-right">
                 @if($post->isDraft())
                     <form method="POST" class="form-horizontal" action="{{ route('blog.publish', ['post' => $post->id]) }}">
                         @csrf
@@ -10,12 +10,12 @@
                 <a href="/Blog/{{ $post->id }}/email" class="btn btn-secondary btn-sm">Test Email</a>
                 @endif
                 <a href="/Blog/{{ $post->id }}/edit" class="btn btn-secondary btn-sm">Edit</a>
-            @endcan
-        </div>
+            </div>
+        @endcan
 
         <h1><a href="{{ route('blog.show', ['slug' => $post->slug]) }}">{{ $post->title }}</a></h1>
     </div>
-    <div class="post card-body">
+    <div class="card-body">
         @can('update', $post)
             @if($post->isDraft() && $post->prologue)
                 <h2>Prologue</h2>
