@@ -18,9 +18,8 @@ class BlogController extends Controller
 {
     public function index()
     {
-        $posts = Post::published()->get();
-
-        View::share(['user' => Auth::user()]);
+//        dd(config('blog.posts_per_page', 10));
+        $posts = Post::published()->paginate(10);
 
         return view('blog::index', [
             'posts' => $posts

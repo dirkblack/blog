@@ -1,4 +1,4 @@
-@extends('layouts.blog')
+@extends(config('blog.layout'))
 
 @section('content')
     @include('blog::_admin_menu', ['title' => 'Subscribe'])

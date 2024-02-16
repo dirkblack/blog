@@ -1,4 +1,4 @@
-@extends('layouts.blog')
+@extends(config('blog.layout'))
 
 @section('content')
     <h1>Tag: {{ $tag }}</h1>

@@ -43,8 +43,19 @@
                     </ul>
                 </nav>
             </header>
-            <div class="blog bg-gray-50">
-                @yield('content')
+            <div class="blog bg-gray-50 px-6 py-8">
+
+                    @if (isset($errors) && $errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+                    @yield('content')
             </div>
         </main>
     </div>

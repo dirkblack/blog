@@ -17,7 +17,8 @@ php artisan blog:install
 
 ## Customization
 
-Change the blog layout file in the blog config file.
+Change the blog layout file in the blog config file.git
+
 
 ###### Step 2
 You'll want to update your `composer.json` with your required namespace and other details - you can do this by running

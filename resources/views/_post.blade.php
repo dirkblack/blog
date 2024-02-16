@@ -1,5 +1,7 @@
-<div class="card mt-3 mb-2 blog_post">
-    <div class="flex">
+<div class="mt-3 mb-2 blog_post">
+    <div class="flex justify-between">
+        <h1><a href="{{ route('blog.show', ['slug' => $post->slug]) }}">{{ $post->title }}</a></h1>
+
         @can('update', $post)
             <div class="float-right">
                 @if($post->isDraft())
@@ -12,10 +14,8 @@
                 <a href="/Blog/{{ $post->id }}/edit" class="btn btn-secondary btn-sm">Edit</a>
             </div>
         @endcan
-
-        <h1><a href="{{ route('blog.show', ['slug' => $post->slug]) }}">{{ $post->title }}</a></h1>
     </div>
-    <div class="card-body">
+    <div class="max-w-prose px-4">
         @can('update', $post)
             @if($post->isDraft() && $post->prologue)
                 <h2>Prologue</h2>

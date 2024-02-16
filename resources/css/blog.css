@@ -38,9 +38,39 @@ th {
 ul {
     @apply list-disc ml-6;
 }
+[type='text'],
+[type='email'],
+[type='url'],
+[type='password'],
+[type='number'],
+[type='date'],
+[type='datetime-local'],
+[type='month'],
+[type='search'],
+[type='tel'],
+[type='time'],
+[type='week'],
+[multiple],
+textarea,
+select {
+    @apply w-full px-2 py-1 text-base border border-gray-300 focus:outline-none focus:ring-primary-light focus:border-primary-light sm:text-sm rounded-md;
+}
+input[type=text]:disabled {
+    @apply bg-gray-300;
+}
+[type='checkbox'],
+[type='radio'] {
+    @apply text-primary rounded;
+}
+input[type=submit] {
+    @apply items-center border border-transparent rounded-md font-semibold text-white text-center uppercase tracking-widest hover:bg-primary-dark focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 bg-primary hover:bg-primary-dark px-4 py-2 text-sm;
+}
+button {
+    @apply items-center border border-transparent rounded-md font-semibold text-white text-center uppercase tracking-widest hover:bg-primary-dark focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 bg-primary hover:bg-primary-dark px-4 py-2 text-sm;
+}
 
 .blog {
-    @apply flex justify-center;
+    @apply flex flex-col;
 }
 .blog_nav_items {
     @apply flex gap-4 list-none;

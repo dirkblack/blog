@@ -1,40 +1,35 @@
-@extends('layouts.blog')
+@extends(config('blog.layout'))
 
 @section('content')
     @include('blog::_admin_menu')
-    <form method="POST" class="form-horizontal" action="/Blog">
-        {!! csrf_field() !!}
-        <div class="card">
-            <div class="card-header">
-                <div class="form-group">
-                    <label for="title">Title</label>
-                    <input type="text" class="form-control" id="title" name="title" placeholder="Make it good!">
+    <div class="w-full">
+        <form method="POST" class="w-full" action="/Blog">
+            @csrf
+            <div class="flex flex-col gap-4">
+                <div class="flex flex-col gap-2">
+                    <label class="font-bold" for="title">Title</label>
+                    <input type="text" id="title" name="title" placeholder="Make it good!">
                 </div>
-            </div>
-            <div class="card-body">
-                <div class="form-group">
-                    <label for="body">Body</label>
-                    <textarea class="form-control" name="body" id="body" cols="30" rows="10"></textarea>
+                <div class="flex flex-col gap-2">
+                    <label class="font-bold" for="body">Body</label>
+                    <textarea name="body" id="body" cols="30" rows="10"></textarea>
                 </div>
-                <div class="form-group">
-                    <label for="body">Prologue</label>
-                    <textarea class="form-control" name="prologue" cols="30" rows="5"></textarea>
+                <div class="flex flex-col gap-2">
+                    <label class="font-bold" for="body">Prologue</label>
+                    <textarea name="prologue" cols="30" rows="5"></textarea>
                 </div>
-                <div class="form-group">
-                    <label for="body">Epilogue</label>
-                    <textarea class="form-control" name="epilogue" cols="30" rows="5"></textarea>
+                <div class="flex flex-col gap-2">
+                    <label class="font-bold" for="body">Epilogue</label>
+                    <textarea name="epilogue" cols="30" rows="5"></textarea>
                 </div>
-                <div class="form-group">
-                    <label for="body">Preview Text</label>
-                    <textarea class="form-control" name="preview" cols="30" rows="5"></textarea>
+                <div class="flex flex-col gap-2">
+                    <label class="font-bold" for="body">Preview Text</label>
+                    <textarea name="preview" cols="30" rows="5"></textarea>
                 </div>
-            </div>
-            <div class="card-footer">
-                <div class="form-group">
+                <div class="flex flex-col gap-2">
                     <input type="submit" class="btn btn-primary" id="create" name="create" value="Create">
                 </div>
             </div>
-        </div>
-
-    </form>
+        </form>
+    </div>
 @endsection

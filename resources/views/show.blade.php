@@ -1,4 +1,4 @@
-@extends('layouts.blog')
+@extends(config('blog.layout'))
 
 @push('head')
     <meta property="og:type" content="article"/>
