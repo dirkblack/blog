@@ -14,7 +14,9 @@ class Post extends Model
 
     protected $guarded = [];
 
-    protected $dates = ['published'];
+    protected $casts = [
+        'published' => 'datetime',
+    ];
 
     const STATUS_DRAFT = 'draft';
     const STATUS_PUBLISHED = 'published';
