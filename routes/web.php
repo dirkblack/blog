@@ -29,7 +29,7 @@ Route::group(['prefix' => '/Blog', 'as' => 'blog.', 'middleware' => ['web', 'aut
 });
 
 // Public Blog Routes
-Route::get('/Blog', 'DarkBlog\Http\Controllers\BlogController@index')->middleware(['web','auth'])->name('blog');
+Route::get('/Blog', 'DarkBlog\Http\Controllers\BlogController@index')->middleware(['web'])->name('blog');
 Route::get('/Blog/tag/{tag}', 'DarkBlog\Http\Controllers\BlogController@showTag');
 Route::get('/Blog/subscribe', 'DarkBlog\Http\Controllers\BlogController@subscribe')->name('blog.subscribe');
 Route::post('/Blog/subscribe', 'DarkBlog\Http\Controllers\BlogController@storeSubscription')->name('subscribe');
