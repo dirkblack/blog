@@ -76,5 +76,5 @@ button {
     @apply flex gap-4 list-none;
 }
 .blog_post {
-    @apply bg-amber-100
+    @apply bg-gray-50;
 }
